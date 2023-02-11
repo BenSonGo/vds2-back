@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Http\Requests\IndicatorValueByMonth;
+
+use App\Models\Company;
+use App\Models\CompanySubunit;
+use App\Models\Indicator;
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateIndicatorValueByMonthRequest extends FormRequest
+{
+    /**
+     * @return array<string, mixed>
+     */
+    public function rules(): array
+    {
+        return [
+            'company_id' => 'required|exists:'.Company::getTableName().',id',
+            'company_subunit_id' => 'exists:'.CompanySubunit::getTableName().',id',
+            'indicator_id' => 'required|exists:'.Indicator::getTableName().',id',
+            'value' => 'required|numeric',
+            'month' => 'required|date_format:Y-m-d',
+        ];
+    }
+}
