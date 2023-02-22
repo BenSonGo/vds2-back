@@ -22,7 +22,7 @@ class GenerateCompaniesAndSubunitsCommand extends Command
                     'name' => $key
                 ];
 
-                if($parent) {
+                if ($parent) {
                     $storeData['parent_id'] = $parent->id;
                 }
 
@@ -49,20 +49,53 @@ class GenerateCompaniesAndSubunitsCommand extends Command
     public function handle(): int
     {
         $companyNameToSubunits = [
-            'Azovstal' => [
-                'Garage' => [
-                    'Managers room' => [
+            'ANPGasStation' => [
+                'Gas Stations' => [
+                    'Shops' => [
                         'Reserve generator',
                     ],
-                    'Generator',
-                    'Test',
+                    'Office',
+                    'Toilets',
                 ],
-                'Main restroom',
-                'Workshop' => [
-                    'Workshop restroom',
+                'Central Warehouse',
+                'Oil Base',
+                'Vehicle Base' => [
+                    'Repair Station',
                 ],
-                'Canteen' => [
-                    'Kitchen',
+            ],
+
+            'KLOGasStation' => [
+                'Gas Stations' => [
+                    'Shops',
+                    'Cafe' => [
+                        'Catering',
+                        'Office',
+                        'Toilets',
+                    ],
+                ],
+                'Central Warehouse',
+                'Oil Base',
+                'Vehicle Base' => [
+                    'Repair Station',
+                ],
+            ],
+
+            'OKKOGasStation' => [
+                'Gas Stations' => [
+                    'Shops' => [
+                        'Reserve generator',
+                    ],
+                    'Cafe' => [
+                        'Catering',
+                        'Office',
+                        'Toilets',
+                    ],
+                ],
+
+                'Central Warehouse',
+                'Oil Base',
+                'Vehicle Base' => [
+                    'Repair Station',
                 ],
             ],
         ];
