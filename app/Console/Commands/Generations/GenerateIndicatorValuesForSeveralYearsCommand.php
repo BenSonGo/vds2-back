@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Generations;
 
+use App\DataTransferObjects\CreateIndicatorValueByMonthDTO;
 use App\Models\Company;
 use App\Models\CompanySubunit;
 use App\Models\Indicator;
@@ -9,7 +10,6 @@ use App\Services\IndicatorValueByMonth\CreateIndicatorValueByMonthService;
 use Carbon\CarbonPeriod;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use App\DataTransferObjects\CreateIndicatorValueByMonthDTO;
 
 class GenerateIndicatorValuesForSeveralYearsCommand extends Command
 {

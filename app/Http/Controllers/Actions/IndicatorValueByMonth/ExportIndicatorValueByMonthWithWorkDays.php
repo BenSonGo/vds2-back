@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-final class ExportIndicatorValueByMonth
+final class ExportIndicatorValueByMonthWithWorkDays
 {
     public function __invoke(ExportIndicatorValueByMonthRequest $request): BinaryFileResponse
     {
@@ -25,10 +25,12 @@ final class ExportIndicatorValueByMonth
             ? $query->where('company_subunit_id', $subunitId)
             : $query->whereNull('company_subunit_id');
 
-        return Excel::download(
-            new CompanyIndicatorsValuesByMonthsExport($query->get()),
-            $this->formExportFilename($companyId, $subunitId),
-        );
+        dd(1);
+        //TODO: make normal export
+//        return Excel::download(
+//            new CompanyIndicatorsValuesByMonthsExport($query->get()),
+//            $this->formExportFilename($companyId, $subunitId),
+//        );
     }
 
     private function formExportFilename(int $companyId, ?int $subunitId): string
@@ -46,6 +48,6 @@ final class ExportIndicatorValueByMonth
             $filename .= '_'.$subunit->name;
         }
 
-        return $filename.'_'.Carbon::now()->toDateTimeString().'.xlsx';
+        return $filename.'_with_work_days_'.Carbon::now()->toDateTimeString().'.xlsx';
     }
 }

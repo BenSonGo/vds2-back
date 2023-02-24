@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Actions\CompanySubunitWorkDaysByMonth\CreateCompanySubunitWorkDaysByMonth;
+use App\Http\Controllers\Actions\CompanySubunitWorkDaysByMonth\UpdateCompanySubunitWorkDaysByMonth;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\CreateIndicatorValueByMonth;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\DeleteIndicatorValueByMonth;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\ExportIndicatorValueByMonth;
+use App\Http\Controllers\Actions\IndicatorValueByMonth\ExportIndicatorValueByMonthWithWorkDays;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\UpdateIndicatorValueByMonth;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanySubunitController;
@@ -25,6 +28,12 @@ require __DIR__ . '/auth.php';
 Route::middleware('auth:user')->group(function () {
     Route::controller(CompanyController::class)->prefix('company')->group(function () {
         Route::controller(CompanySubunitController::class)->prefix('subunit')->group(function () {
+            Route::prefix('work-days-by-month')
+                ->group(function () {
+                    Route::post('/', CreateCompanySubunitWorkDaysByMonth::class);
+                    Route::patch('/{workDaysByMonth}', UpdateCompanySubunitWorkDaysByMonth::class);
+                });
+
             Route::get('/', 'collection');
             Route::get('/tree', 'collectionTree');
             Route::get('/{subunit}', 'get');
@@ -54,6 +63,9 @@ Route::middleware('auth:user')->group(function () {
             Route::patch('/{indicatorValueByMonth}', UpdateIndicatorValueByMonth::class);
             Route::delete('/{indicatorValueByMonth}', DeleteIndicatorValueByMonth::class);
 
-            Route::get('/export', ExportIndicatorValueByMonth::class);
+            Route::prefix('export')->group(function () {
+                Route::get('/', ExportIndicatorValueByMonth::class);
+                Route::get('/with-work-days', ExportIndicatorValueByMonthWithWorkDays::class);
+            });
         });
 });
