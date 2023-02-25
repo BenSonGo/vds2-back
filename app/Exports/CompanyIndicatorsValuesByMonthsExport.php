@@ -7,12 +7,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 
-final class CompanyIndicatorsValuesByMonthsExport implements FromView
+final readonly class CompanyIndicatorsValuesByMonthsExport implements FromView
 {
     /**
      * @param Collection<IndicatorValueByMonth> $companyIndicatorValuesByMonths
      */
-    public function __construct(private readonly Collection $companyIndicatorValuesByMonths)
+    public function __construct(private Collection $companyIndicatorValuesByMonths)
     {
     }
 

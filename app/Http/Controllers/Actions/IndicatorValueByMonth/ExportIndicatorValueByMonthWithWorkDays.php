@@ -2,35 +2,58 @@
 
 namespace App\Http\Controllers\Actions\IndicatorValueByMonth;
 
-use App\Exports\CompanyIndicatorsValuesByMonthsExport;
-use App\Http\Requests\IndicatorValueByMonth\ExportIndicatorValueByMonthRequest;
+use App\Exports\CompanyIndicatorValuesWithWorkDaysByMonthsExport;
+use App\Http\Requests\IndicatorValueByMonth\ExportIndicatorValueWithWorkDaysByMonthRequest;
 use App\Models\Company;
 use App\Models\CompanySubunit;
 use App\Models\IndicatorValueByMonth;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 final class ExportIndicatorValueByMonthWithWorkDays
 {
-    public function __invoke(ExportIndicatorValueByMonthRequest $request): BinaryFileResponse
+    public function __invoke(ExportIndicatorValueWithWorkDaysByMonthRequest $request): BinaryFileResponse
     {
         $companyId = $request->get('company_id');
         $subunitId = $request->get('company_subunit_id');
+        $indicatorId = $request->get('indicator_id');
 
         $query = IndicatorValueByMonth::query()
-            ->where('company_id', '=', $companyId);
+            ->selectRaw(
+                'indicator_value_by_months.*, company_subunit_work_days_by_months.work_days as work_days, indicator_value_by_months.value / work_days as value_by_day',
+            )
+            ->where([
+                ['indicator_value_by_months.company_id', '=', $companyId],
+                ['indicator_value_by_months.indicator_id', '=', $indicatorId],
+            ])
+            ->leftJoin('company_subunit_work_days_by_months', function (JoinClause $join) {
+                $join->on(
+                    'company_subunit_work_days_by_months.company_id',
+                    '=',
+                    'indicator_value_by_months.company_id',
+                );
+                $join->on(
+                    'company_subunit_work_days_by_months.company_subunit_id',
+                    '<=>',
+                    'indicator_value_by_months.company_subunit_id',
+                );
+                $join->on(
+                    'company_subunit_work_days_by_months.month',
+                    '=',
+                    'indicator_value_by_months.month',
+                );
+            });
 
         $query = $subunitId
-            ? $query->where('company_subunit_id', $subunitId)
-            : $query->whereNull('company_subunit_id');
+            ? $query->where('indicator_value_by_months.company_subunit_id', $subunitId)
+            : $query->whereNull('indicator_value_by_months.company_subunit_id');
 
-        dd(1);
-        //TODO: make normal export
-//        return Excel::download(
-//            new CompanyIndicatorsValuesByMonthsExport($query->get()),
-//            $this->formExportFilename($companyId, $subunitId),
-//        );
+        return Excel::download(
+            new CompanyIndicatorValuesWithWorkDaysByMonthsExport($query->get()),
+            $this->formExportFilename($companyId, $subunitId),
+        );
     }
 
     private function formExportFilename(int $companyId, ?int $subunitId): string
