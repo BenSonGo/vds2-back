@@ -18,16 +18,22 @@ use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 
 /**
- * App\Models\User
+ * \App\Models\User
  *
  * @property int $id
  * @property string $email
- * @property string $name
+ * @property string|null $name
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Collection<int, Company> $companies
+ * @property-read int|null $companies_count
+ * @property-read Collection<int, Indicator> $companyIndicators
+ * @property-read int|null $company_indicators_count
+ * @property-read Collection<int, Resource> $companyResources
+ * @property-read int|null $company_resources_count
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection<int, PersonalAccessToken> $tokens
@@ -37,17 +43,13 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User newQuery()
  * @method static Builder|User query()
  * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereEmail($value)
  * @method static Builder|User whereEmailVerifiedAt($value)
  * @method static Builder|User whereId($value)
  * @method static Builder|User whereName($value)
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @property-read Collection<int, Company> $companies
- * @property-read int|null $companies_count
- * @method static Builder|User whereEmail($value)
- * @property-read Collection<int, Indicator> $companyIndicators
- * @property-read int|null $company_indicators_count
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -96,5 +98,10 @@ class User extends Authenticatable
     public function doesntHaveCompany(int $companyId): bool
     {
         return $this->companies->doesntContain($companyId);
+    }
+
+    public function companyResources(): HasMany
+    {
+        return $this->hasMany(Resource::class, 'user_id', 'id');
     }
 }

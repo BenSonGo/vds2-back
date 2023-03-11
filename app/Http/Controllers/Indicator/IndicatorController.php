@@ -42,6 +42,7 @@ class IndicatorController extends Controller
 
         return new IndicatorResource(
             Indicator::create([
+                'resource_id' => $request->get('resource_id'),
                 'user_id' => $user->id,
                 'name' => $request->get('name'),
             ])

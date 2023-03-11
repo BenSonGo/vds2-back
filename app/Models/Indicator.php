@@ -28,6 +28,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Indicator withoutTrashed()
  * @property int $user_id
  * @method static Builder|Indicator whereUserId($value)
+ * @property int|null $resource_id
+ * @method static Builder|Indicator whereResourceId($value)
  * @mixin \Eloquent
  */
 class Indicator extends Model
@@ -38,6 +40,7 @@ class Indicator extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'resource_id',
         'user_id',
         'name',
     ];

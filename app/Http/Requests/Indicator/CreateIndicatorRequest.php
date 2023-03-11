@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Indicator;
 
+use App\Models\Resource;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateIndicatorRequest extends FormRequest
@@ -12,6 +13,7 @@ class CreateIndicatorRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'resource_id' => 'required|exists:'.Resource::getTableName().',id',
             'name' => 'required|string|max:255',
         ];
     }

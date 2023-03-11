@@ -10,6 +10,7 @@ use App\Http\Controllers\Actions\IndicatorValueByMonth\UpdateIndicatorValueByMon
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanySubunitController;
 use App\Http\Controllers\Indicator\IndicatorController;
+use App\Http\Controllers\ResourceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +48,14 @@ Route::middleware('auth:user')->group(function () {
         Route::post('/', 'create');
         Route::patch('/{company}', 'update');
         Route::delete('/{company}', 'delete');
+    });
+
+    Route::controller(ResourceController::class)->prefix('resource')->group(function () {
+        Route::get('/', 'collection');
+        Route::get('/{resource}', 'get');
+        Route::post('/', 'create');
+        Route::patch('/{resource}', 'update');
+        Route::delete('/{resource}', 'delete');
     });
 
     Route::controller(IndicatorController::class)->prefix('indicator')->group(function () {
