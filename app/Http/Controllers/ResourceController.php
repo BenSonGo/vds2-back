@@ -55,9 +55,9 @@ class ResourceController extends Controller
             throw new RequestForbiddenException('Resource isn\'t assigned to user');
         }
 
-        return new ResourceResource(
-            $resource->update($request->validated())
-        );
+        $resource->update($request->validated());
+
+        return new ResourceResource($resource);
     }
 
     public function delete(Resource $resource): SuccessJsonResponse

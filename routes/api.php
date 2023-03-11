@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Actions\CompanySubunitWorkDaysByMonth\CreateCompanySubunitWorkDaysByMonth;
 use App\Http\Controllers\Actions\CompanySubunitWorkDaysByMonth\UpdateCompanySubunitWorkDaysByMonth;
+use App\Http\Controllers\Actions\ExportActivityEfficiency;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\CreateIndicatorValueByMonth;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\DeleteIndicatorValueByMonth;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\ExportIndicatorValueByMonth;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\ExportIndicatorValueByMonthWithWorkDays;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\UpdateIndicatorValueByMonth;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanySubunitController;
 use App\Http\Controllers\Indicator\IndicatorController;
@@ -64,6 +66,16 @@ Route::middleware('auth:user')->group(function () {
         Route::post('/', 'create');
         Route::patch('/{indicator}', 'update');
         Route::delete('/{indicator}', 'delete');
+    });
+
+    Route::controller(ActivityController::class)->prefix('activity')->group(function () {
+        Route::get('/', 'collection');
+        Route::get('/{activity}', 'get');
+        Route::post('/', 'create');
+        Route::patch('/{activity}', 'update');
+        Route::delete('/{activity}', 'delete');
+
+        Route::get('/{activity}/efficiency/export', ExportActivityEfficiency::class);
     });
 
     Route::prefix('indicator-value-by-month')

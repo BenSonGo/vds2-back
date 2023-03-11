@@ -30,6 +30,8 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Company> $companies
  * @property-read int|null $companies_count
+ * @property-read Collection<int, Activity> $companyActivities
+ * @property-read int|null $company_activities_count
  * @property-read Collection<int, Indicator> $companyIndicators
  * @property-read int|null $company_indicators_count
  * @property-read Collection<int, Resource> $companyResources
@@ -103,5 +105,10 @@ class User extends Authenticatable
     public function companyResources(): HasMany
     {
         return $this->hasMany(Resource::class, 'user_id', 'id');
+    }
+
+    public function companyActivities(): HasManyThrough
+    {
+        return $this->hasManyThrough(Activity::class, Resource::class);
     }
 }

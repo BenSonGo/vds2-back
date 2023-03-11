@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -30,6 +32,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Indicator whereUserId($value)
  * @property int|null $resource_id
  * @method static Builder|Indicator whereResourceId($value)
+ * @property int|null $type
+ * @method static Builder|Indicator whereType($value)
+ * @property-read Collection<int, IndicatorValueByMonth> $valueByMonths
+ * @property-read int|null $value_by_months_count
  * @mixin \Eloquent
  */
 class Indicator extends Model
@@ -48,5 +54,10 @@ class Indicator extends Model
     public static function getTableName(): string
     {
         return (new static)->getTable();
+    }
+
+    public function valueByMonths(): HasMany
+    {
+        return $this->hasMany(IndicatorValueByMonth::class, 'indicator_id', 'id');
     }
 }

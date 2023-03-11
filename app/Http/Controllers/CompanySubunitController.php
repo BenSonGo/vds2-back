@@ -85,9 +85,9 @@ class CompanySubunitController extends Controller
             throw new RequestForbiddenException('Company subunit isn\'t assigned to user');
         }
 
-        return new CompanySubunitResource(
-            $subunit->update($request->validated())
-        );
+        $subunit->update($request->validated());
+
+        return new CompanySubunitResource($subunit);
     }
 
     public function delete(CompanySubunit $subunit): SuccessJsonResponse

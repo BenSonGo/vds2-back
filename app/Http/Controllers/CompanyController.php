@@ -54,9 +54,9 @@ class CompanyController extends Controller
             throw new RequestForbiddenException('Company isn\'t assigned to user');
         }
 
-        return new CompanyResource(
-            $company->update($request->validated())
-        );
+        $company->update($request->validated());
+
+        return new CompanyResource($company);
     }
 
     public function delete(Company $company): SuccessJsonResponse

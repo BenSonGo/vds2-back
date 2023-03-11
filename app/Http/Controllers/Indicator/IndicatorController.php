@@ -58,9 +58,9 @@ class IndicatorController extends Controller
             throw new RequestForbiddenException('Indicator isn\'t assigned to user');
         }
 
-        return new IndicatorResource(
-            $indicator->update($request->validated())
-        );
+        $indicator->update($request->validated());
+
+        return new IndicatorResource($indicator);
     }
 
     public function delete(Indicator $indicator): SuccessJsonResponse
