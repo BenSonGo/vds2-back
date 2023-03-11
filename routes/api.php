@@ -7,6 +7,8 @@ use App\Http\Controllers\Actions\IndicatorValueByMonth\CreateIndicatorValueByMon
 use App\Http\Controllers\Actions\IndicatorValueByMonth\DeleteIndicatorValueByMonth;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\ExportIndicatorValueByMonth;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\ExportIndicatorValueByMonthWithWorkDays;
+use App\Http\Controllers\Actions\IndicatorValueByMonth\GetIndicatorValueByMonth;
+use App\Http\Controllers\Actions\IndicatorValueByMonth\GetIndicatorValueByMonthCollection;
 use App\Http\Controllers\Actions\IndicatorValueByMonth\UpdateIndicatorValueByMonth;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CompanyController;
@@ -81,6 +83,8 @@ Route::middleware('auth:user')->group(function () {
     Route::prefix('indicator-value-by-month')
         ->group(function () {
             Route::post('/', CreateIndicatorValueByMonth::class);
+            Route::get('/', GetIndicatorValueByMonthCollection::class);
+            Route::get('/{indicatorValueByMonth}', GetIndicatorValueByMonth::class);
             Route::patch('/{indicatorValueByMonth}', UpdateIndicatorValueByMonth::class);
             Route::delete('/{indicatorValueByMonth}', DeleteIndicatorValueByMonth::class);
 

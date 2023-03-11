@@ -52,6 +52,8 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
+ * @property-read Collection<int, IndicatorValueByMonth> $companyIndicatorValuesByMonth
+ * @property-read int|null $company_indicator_values_by_month_count
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -110,5 +112,10 @@ class User extends Authenticatable
     public function companyActivities(): HasManyThrough
     {
         return $this->hasManyThrough(Activity::class, Resource::class);
+    }
+
+    public function companyIndicatorValuesByMonth(): HasManyThrough
+    {
+        return $this->hasManyThrough(IndicatorValueByMonth::class, Indicator::class);
     }
 }
